@@ -788,4 +788,37 @@ function render(){
 }
 
 init();
+
+<!-- Firebase SDK & Realtime Bridge -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYkW8d4TkxeWGXNCQqiv66Jbpy1p94kdc",
+  authDomain: "poker-d7b96.firebaseapp.com",
+  projectId: "poker-d7b96",
+  storageBucket: "poker-d7b96.firebasestorage.app",
+  messagingSenderId: "761852238177",
+  appId: "1:761852238177:web:ab2dd2d4bd27dc6037cd20",
+  measurementId: "G-DETNVLVTWQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.saveRoom = function(roomId, gameData) {
+    set(ref(db, 'rooms/' + roomId), gameData);
+  };
+
+  window.listenToRoom = function(roomId, updateUICallback) {
+    const roomRef = ref(db, 'rooms/' + roomId);
+    onValue(roomRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        updateUICallback(data);
+      }
+    });
+  };
 </script>
+
