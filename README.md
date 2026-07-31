@@ -1,1 +1,823 @@
-# NORISK-NOSTORY
+<!doctype html>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12161A;
+    --surface:#1B2321;
+    --surface-2:#212B27;
+    --line:rgba(237,234,227,0.09);
+    --felt:#0F5C3D;
+    --felt-bright:#2C9468;
+    --felt-deep:#0B4530;
+    --gold:#D4A94C;
+    --gold-bright:#E8C374;
+    --red:#B23A3A;
+    --ink:#EDEAE3;
+    --ink-dim:#9AA39D;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:transparent;color:var(--ink);
+    font-family:'Inter',sans-serif;}
+  body{min-height:100%;}
+  .app{max-width:760px;margin:0 auto;padding:26px 16px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;}
+  h1,h2,h3{font-family:'Fraunces',serif;margin:0;}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px;}
+  .brand .mark{width:28px;height:28px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 70%);
+    border:3px dashed rgba(18,22,26,0.35); flex:none;}
+  .brand span{font-family:'Fraunces',serif;font-weight:600;font-size:17px;letter-spacing:.02em;}
+
+  /* ---- Home ---- */
+  .hero{padding:30px 0 18px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--felt-bright);margin-bottom:14px;}
+  .hero h1{font-size:38px;line-height:1.1;font-weight:600;max-width:9.5em;}
+  .hero p{color:var(--ink-dim);font-size:15.5px;line-height:1.6;max-width:34em;margin-top:16px;}
+  .cta-row{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+
+  .btn{font-family:'Inter',sans-serif;font-weight:600;font-size:14px;border:none;
+    border-radius:11px;padding:12px 20px;cursor:pointer;transition:transform .12s ease, filter .12s ease;}
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--gold);color:#1A1503;}
+  .btn-primary:hover{filter:brightness(1.08);}
+  .btn-secondary{background:var(--surface-2);color:var(--ink);border:1px solid var(--line);}
+  .btn-secondary:hover{border-color:rgba(237,234,227,0.25);}
+  .btn-felt{background:var(--felt);color:#EAF6EF;}
+  .btn-felt:hover{filter:brightness(1.15);}
+  .btn-danger{background:transparent;color:var(--red);border:1px solid rgba(178,58,58,0.4);}
+  .btn-ghost{background:transparent;color:var(--ink-dim);border:1px solid var(--line);}
+  .btn-block{width:100%;}
+  .btn-sm{padding:8px 13px;font-size:12.5px;border-radius:8px;}
+  .btn[disabled]{opacity:.4;cursor:not-allowed;}
+
+  /* ---- Cards / panels ---- */
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;}
+  .panel + .panel{margin-top:14px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;color:var(--ink-dim);margin-bottom:7px;letter-spacing:.02em;}
+  .field input[type=text], .field input[type=number]{
+    width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14.5px;}
+  .field input:focus{outline:none;border-color:var(--felt-bright);}
+  .pillrow{display:flex;gap:8px;}
+  .pill{flex:1;text-align:center;padding:10px;border-radius:9px;border:1px solid var(--line);
+    background:var(--surface-2);color:var(--ink-dim);cursor:pointer;font-weight:600;font-size:14px;}
+  .pill.active{background:var(--felt);color:#EAF6EF;border-color:var(--felt);}
+  .backlink{display:inline-flex;align-items:center;gap:6px;color:var(--ink-dim);font-size:13px;
+    cursor:pointer;margin-bottom:18px;border:none;background:none;padding:0;font-family:inherit;}
+  .backlink:hover{color:var(--ink);}
+  .error-text{color:var(--red);font-size:13px;margin-top:10px;}
+  .section-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-dim);margin-bottom:12px;}
+
+  /* ---- Resume list ---- */
+  .resume-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;
+    border-bottom:1px solid var(--line);}
+  .resume-row:last-child{border-bottom:none;}
+  .resume-row .rname{font-weight:600;font-size:14.5px;}
+  .resume-row .rcode{color:var(--ink-dim);font-size:12px;font-family:'JetBrains Mono',monospace;}
+
+  /* ---- Room header ---- */
+  .room-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .room-head h2{font-size:20px;}
+  .head-actions{display:flex;gap:8px;align-items:center;}
+  .code-chip{display:inline-flex;align-items:center;gap:8px;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:20px;padding:7px 14px;font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;letter-spacing:.08em;color:var(--gold-bright);}
+  .code-chip button{background:none;border:none;color:var(--ink-dim);cursor:pointer;font-size:11.5px;
+    font-family:'Inter',sans-serif;padding:0;margin-left:2px;}
+  .code-chip button:hover{color:var(--ink);}
+  .icon-btn{background:var(--surface-2);border:1px solid var(--line);color:var(--ink-dim);
+    border-radius:9px;padding:8px 12px;cursor:pointer;font-size:12.5px;font-weight:600;}
+  .icon-btn:hover{color:var(--ink);}
+
+  /* ---- Stat pills ---- */
+  .stat-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+  .stat-pill{flex:1;min-width:140px;background:var(--surface);border:1px solid var(--line);
+    border-radius:13px;padding:13px 16px;}
+  .stat-pill .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;margin-bottom:5px;}
+  .stat-pill .val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;color:var(--gold-bright);}
+  .stat-pill.felt .val{color:var(--felt-bright);}
+
+  /* ---- Round table ---- */
+  .table-wrap{position:relative;width:100%;aspect-ratio:15/11;margin:8px 0 18px;}
+  .table-oval{position:absolute;inset:8%;border-radius:50%;
+    background:radial-gradient(ellipse at center, var(--felt) 0%, var(--felt-deep) 78%);
+    border:10px solid #241A10; box-shadow:inset 0 0 40px rgba(0,0,0,0.5), 0 10px 26px rgba(0,0,0,0.45);}
+  .table-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+  .pot-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:rgba(237,234,227,0.55);margin-bottom:4px;}
+  .pot-amt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:var(--gold-bright);
+    text-shadow:0 2px 8px rgba(0,0,0,0.5);}
+  .seat{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;
+    align-items:center;gap:4px;width:76px;}
+  .chip{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    border:5px dashed rgba(255,255,255,0.22); box-shadow:0 6px 14px rgba(0,0,0,0.45), inset 0 0 0 3px rgba(0,0,0,0.18);
+    position:relative;}
+  .chip.clickable{cursor:pointer;transition:transform .12s ease;}
+  .chip.clickable:hover{transform:translateY(-3px) scale(1.04);}
+  .chip.me{outline:2px solid var(--gold-bright);outline-offset:3px;}
+  .chip .amt{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:11px;color:#12161A;
+    text-shadow:0 1px 0 rgba(255,255,255,0.25);}
+  .seat-name{font-size:11.5px;color:var(--ink);text-align:center;font-weight:600;
+    background:rgba(18,22,26,0.55);padding:2px 7px;border-radius:8px;white-space:nowrap;
+    max-width:90px;overflow:hidden;text-overflow:ellipsis;}
+  .bet-stack{display:flex;gap:2px;align-items:center;height:12px;}
+  .bet-dot{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.3);}
+  .bet-amt{font-size:10px;color:var(--gold-bright);font-family:'JetBrains Mono',monospace;font-weight:700;}
+  .cashed-badge{font-size:9px;color:var(--red);font-family:'JetBrains Mono',monospace;text-transform:uppercase;}
+
+  /* Lobby stepper on seat */
+  .stepper{display:flex;align-items:center;gap:4px;}
+  .stepper button{width:20px;height:20px;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);
+    color:var(--ink);cursor:pointer;font-size:12px;line-height:1;}
+  .stepper input{width:52px;text-align:center;background:var(--surface-2);border:1px solid var(--line);
+    border-radius:6px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 2px;}
+
+  /* ---- Action bar ---- */
+  .action-bar{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;}
+  .slider-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  input[type=range]{flex:1;accent-color:var(--gold);height:6px;}
+  .slider-val{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold-bright);
+    font-size:16px;min-width:64px;text-align:right;}
+  .denom-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .denom-chip{padding:7px 13px;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;border:2px solid rgba(255,255,255,0.15);}
+  .util-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+
+  .winner-row{display:flex;gap:8px;margin-top:6px;}
+  select{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14.5px;}
+
+  /* ---- Ledger ---- */
+  .ledger{list-style:none;margin:0;padding:0;max-height:240px;overflow-y:auto;}
+  .ledger li{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;
+    border-bottom:1px solid var(--line);font-size:13px;gap:10px;}
+  .ledger li:last-child{border-bottom:none;}
+  .ledger .who{color:var(--ink);}
+  .ledger .who b{color:var(--gold-bright);}
+  .ledger .amt-cell{font-family:'JetBrains Mono',monospace;font-weight:600;}
+  .ledger .ts{color:var(--ink-dim);font-size:10.5px;white-space:nowrap;}
+  .empty-ledger{color:var(--ink-dim);font-size:13.5px;padding:12px 0;text-align:center;}
+
+  /* ---- Rebuy banner ---- */
+  .rebuy-banner{background:var(--surface-2);border:1px solid var(--gold);border-radius:13px;
+    padding:14px 16px;margin-bottom:14px;}
+  .rebuy-banner .rtitle{font-size:13.5px;margin-bottom:8px;}
+  .rebuy-banner .rtitle b{color:var(--gold-bright);}
+  .approve-count{font-size:11.5px;color:var(--ink-dim);margin-bottom:10px;font-family:'JetBrains Mono',monospace;}
+
+  /* ---- Modal ---- */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(9,11,13,0.68);display:flex;
+    align-items:center;justify-content:center;z-index:50;padding:18px;backdrop-filter:blur(2px);}
+  .modal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px;
+    width:100%;max-width:380px;}
+  .modal h3{font-size:18px;margin-bottom:16px;}
+  .modal p{font-size:13.5px;color:var(--ink-dim);line-height:1.6;margin:0 0 16px;}
+  .modal-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .modal-actions .btn{flex:1;min-width:120px;}
+
+  /* ---- Settlement ---- */
+  .net-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);}
+  .net-row:last-child{border-bottom:none;}
+  .net-name{display:flex;align-items:center;gap:12px;}
+  .dot{width:12px;height:12px;border-radius:50%;flex:none;}
+  .net-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;}
+  .pos{color:var(--felt-bright);} .neg{color:var(--red);}
+  .settle-line{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14.5px;}
+  .settle-line:last-child{border-bottom:none;}
+  .settle-line .arrow{color:var(--gold-bright);}
+  .settle-line .amt{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--gold-bright);}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--surface-2);
+    border:1px solid var(--line);color:var(--ink);padding:11px 18px;border-radius:10px;font-size:13.5px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:99;opacity:0;pointer-events:none;transition:opacity .2s ease, transform .2s ease;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+  .footer-note{color:var(--ink-dim);font-size:12px;text-align:center;margin-top:26px;line-height:1.6;}
+  @media(max-width:460px){ .hero h1{font-size:30px;} .chip{width:54px;height:54px;} .seat{width:64px;}
+    .table-wrap{aspect-ratio:11/13;} }
+</style>
+
+<div class="app" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_NS = 'pokerchips_v2';
+const PALETTE = ['#D4A94C','#4C8DD4','#B23A3A','#3AA66B','#9B59B6','#E67E22','#1ABC9C','#E8698C'];
+const CUR_SYMBOL = {USD:'$', INR:'\u20B9'};
+
+let state = {
+  view:'home', roomCode:null, myId:null, room:null,
+  createDraft:{currency:'USD', stack:500, name:'', hostName:''},
+  joinDraft:{code:'', name:''},
+  error:'', modal:null, pollTimer:null,
+  myRooms:[], betAmount:0
+};
+
+function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); }
+function roomCode(){ const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let c=''; for(let i=0;i<5;i++) c+=chars[Math.floor(Math.random()*chars.length)]; return c; }
+function fmt(n, cur){ const sym = CUR_SYMBOL[cur]||''; const v = Math.round(n*100)/100; return sym + v.toLocaleString(undefined,{minimumFractionDigits: v%1?2:0, maximumFractionDigits:2}); }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(window.__toastT); window.__toastT=setTimeout(()=>t.classList.remove('show'), 2400); }
+function niceRound(n){ if(n<=0) return 1; const p = Math.pow(10, Math.floor(Math.log10(n))); const r = Math.round(n/p)*p; return r||1; }
+function chipTier(amt){ if(amt>=500) return '#161616'; if(amt>=100) return '#6b3fa0'; if(amt>=25) return '#2c9468'; if(amt>=5) return '#B23A3A'; return '#EDEAE3'; }
+
+async function storeSet(key, value, shared){ try{ return await window.storage.set(key, value, shared); }catch(e){ console.error('storage set failed', e); return null; } }
+async function storeGet(key, shared){ try{ return await window.storage.get(key, shared); }catch(e){ return null; } }
+
+async function saveRoom(room){ room.updatedAt = Date.now(); await storeSet(STORAGE_NS + ':room:' + room.code, JSON.stringify(room), true); state.room = room; }
+async function loadRoom(code){ const res = await storeGet(STORAGE_NS + ':room:' + code, true); if(!res) return null; try{ return JSON.parse(res.value); }catch(e){ return null; } }
+async function rememberIdentity(code, playerId){ await storeSet(STORAGE_NS + ':me:' + code, playerId, false); }
+async function recallIdentity(code){ const res = await storeGet(STORAGE_NS + ':me:' + code, false); return res ? res.value : null; }
+
+async function rememberRoomInList(code, name, playerId){
+  let list = [];
+  try{ const res = await storeGet(STORAGE_NS + ':myrooms', false); list = res ? JSON.parse(res.value) : []; }catch(e){ list = []; }
+  list = list.filter(x=>x.code!==code);
+  list.unshift({ code, name, playerId, ts: Date.now() });
+  list = list.slice(0,8);
+  await storeSet(STORAGE_NS + ':myrooms', JSON.stringify(list), false);
+  state.myRooms = list;
+}
+async function loadMyRoomsList(){
+  try{ const res = await storeGet(STORAGE_NS + ':myrooms', false); state.myRooms = res ? JSON.parse(res.value) : []; }catch(e){ state.myRooms = []; }
+}
+
+function myPlayer(){ if(!state.room) return null; return state.room.players.find(p=>p.id===state.myId) || null; }
+function isHost(){ return state.room && state.myId === state.room.hostId; }
+function activePlayers(room){ return room.players.filter(p=>!p.cashedOut); }
+
+function stopPolling(){ if(state.pollTimer){ clearInterval(state.pollTimer); state.pollTimer=null; } }
+function startPolling(){
+  stopPolling();
+  state.pollTimer = setInterval(async ()=>{
+    if(!state.roomCode) return;
+    const fresh = await loadRoom(state.roomCode);
+    if(fresh && JSON.stringify(fresh) !== JSON.stringify(state.room)){
+      state.room = fresh;
+      if(fresh.status === 'lobby' && state.view !== 'lobby') state.view='lobby';
+      if(fresh.status === 'active' && state.view !== 'table') state.view='table';
+      if(fresh.status === 'ended' && state.view !== 'settlement') state.view='settlement';
+      render();
+    }
+  }, 2200);
+}
+
+function setHash(code){ try{ history.replaceState(null,'','#room=' + code); }catch(e){} }
+function currentLink(){ let base = location.href.split('#')[0]; return base + '#room=' + state.roomCode; }
+
+async function init(){
+  await loadMyRoomsList();
+  const m = location.hash.match(/room=([A-Za-z0-9]+)/);
+  if(m){
+    const code = m[1].toUpperCase();
+    const room = await loadRoom(code);
+    if(room){
+      const savedId = await recallIdentity(code);
+      state.roomCode = code; state.room = room;
+      if(savedId && room.players.find(p=>p.id===savedId)){
+        state.myId = savedId;
+        state.view = room.status === 'lobby' ? 'lobby' : (room.status === 'active' ? 'table' : 'settlement');
+        startPolling();
+      } else { state.view = 'join'; state.joinDraft.code = code; }
+    } else { state.view = 'join'; state.joinDraft.code = code; }
+  }
+  render();
+}
+
+/* ---------------- actions ---------------- */
+
+async function createRoom(){
+  const d = state.createDraft;
+  if(!d.name.trim()) return state.error = 'Give your table a name.', render();
+  if(!d.hostName.trim()) return state.error = 'Enter your name.', render();
+  if(!d.stack || d.stack <= 0) return state.error = 'Starting stack must be a positive number.', render();
+  state.error='';
+  const code = roomCode(); const hostId = uid();
+  const room = {
+    code, name: d.name.trim(), currency: d.currency, defaultStack: Number(d.stack),
+    hostId, status: 'lobby', createdAt: Date.now(),
+    players: [{ id: hostId, name: d.hostName.trim(), color: PALETTE[0], buyIn: Number(d.stack), balance: Number(d.stack), cashedOut:false }],
+    ledger: [], pot: { amount: 0, contributions: {} }, pendingRebuy: null
+  };
+  await saveRoom(room);
+  await rememberIdentity(code, hostId);
+  await rememberRoomInList(code, room.name, hostId);
+  state.roomCode = code; state.myId = hostId; state.view = 'lobby';
+  setHash(code); startPolling(); render();
+}
+
+async function joinRoom(){
+  const d = state.joinDraft;
+  const code = d.code.trim().toUpperCase();
+  if(!code) return state.error = 'Enter a table code.', render();
+  if(!d.name.trim()) return state.error = 'Enter your name.', render();
+  const room = await loadRoom(code);
+  if(!room) return state.error = 'No table found with that code.', render();
+  state.error='';
+  let playerId;
+  const existing = room.players.find(p=>p.name.toLowerCase()===d.name.trim().toLowerCase());
+  if(existing){
+    playerId = existing.id;
+    if(existing.cashedOut){ existing.cashedOut = false; }
+  } else {
+    if(room.status !== 'lobby') return state.error = 'This table already started \u2014 ask the host for the seat, or use the exact name you joined with.', render();
+    playerId = uid();
+    const color = PALETTE[room.players.length % PALETTE.length];
+    room.players.push({ id: playerId, name: d.name.trim(), color, buyIn: room.defaultStack, balance: room.defaultStack, cashedOut:false });
+  }
+  await saveRoom(room);
+  await rememberIdentity(code, playerId);
+  await rememberRoomInList(code, room.name, playerId);
+  state.roomCode = code; state.myId = playerId; state.room = room;
+  state.view = room.status === 'lobby' ? 'lobby' : (room.status === 'active' ? 'table' : 'settlement');
+  setHash(code); startPolling(); render();
+}
+
+async function resumeRoom(entry){
+  const room = await loadRoom(entry.code);
+  if(!room || !room.players.find(p=>p.id===entry.playerId)){
+    showToast('That table is no longer available.'); return;
+  }
+  state.roomCode = entry.code; state.myId = entry.playerId; state.room = room;
+  const me = room.players.find(p=>p.id===entry.playerId);
+  if(me.cashedOut) me.cashedOut = false;
+  await saveRoom(room);
+  state.view = room.status === 'lobby' ? 'lobby' : (room.status === 'active' ? 'table' : 'settlement');
+  setHash(entry.code); startPolling(); render();
+}
+
+async function adjustBuyIn(playerId, delta){
+  const room = state.room; const p = room.players.find(x=>x.id===playerId); if(!p) return;
+  p.buyIn = Math.max(0, p.buyIn + delta); p.balance = p.buyIn;
+  await saveRoom(room); render();
+}
+async function setBuyInExact(playerId, val){
+  const room = state.room; const p = room.players.find(x=>x.id===playerId); if(!p) return;
+  const n = Number(val); if(isNaN(n) || n < 0) return;
+  p.buyIn = n; p.balance = n;
+  await saveRoom(room); render();
+}
+async function startGame(){
+  if(!isHost()) return;
+  const room = state.room; room.status = 'active';
+  room.ledger.unshift({ id: uid(), ts: Date.now(), type:'note', text: 'Game started' });
+  await saveRoom(room); state.view='table'; render();
+}
+
+function updateBetSlider(val){ state.betAmount = Number(val); render(); }
+function setBetPreset(val){ const me = myPlayer(); if(!me) return; state.betAmount = Math.min(val, me.balance); render(); }
+
+async function pushToPot(){
+  const room = state.room; const me = myPlayer(); if(!me) return;
+  const amt = Number(state.betAmount);
+  if(isNaN(amt) || amt <= 0) return state.error = 'Slide to an amount above zero first.', render();
+  if(amt > me.balance) return state.error = 'That\u2019s more than your stack.', render();
+  me.balance -= amt;
+  room.pot.amount += amt;
+  room.pot.contributions[me.id] = (room.pot.contributions[me.id]||0) + amt;
+  room.ledger.unshift({ id: uid(), ts: Date.now(), type:'bet', from: me.name, amount: amt });
+  state.error=''; state.betAmount = 0;
+  await saveRoom(room); render();
+}
+async function awardPot(winnerId){
+  const room = state.room; const winner = room.players.find(p=>p.id===winnerId);
+  if(!winner || room.pot.amount <= 0) return;
+  const amount = room.pot.amount;
+  winner.balance += amount;
+  room.ledger.unshift({ id: uid(), ts: Date.now(), type:'pot_award', to: winner.name, amount });
+  room.pot = { amount: 0, contributions: {} };
+  await saveRoom(room); render();
+}
+
+async function requestRebuy(amount){
+  const room = state.room; const me = myPlayer(); if(!me) return;
+  const amt = Number(amount);
+  if(isNaN(amt) || amt<=0) return state.error='Enter an amount above zero.', render();
+  if(room.pendingRebuy) return state.error='There\u2019s already a buy-in request waiting on approval.', render();
+  room.pendingRebuy = { id: uid(), playerId: me.id, playerName: me.name, amount: amt, approvals: [me.id] };
+  state.error=''; state.modal=null;
+  await saveRoom(room); render();
+}
+async function approveRebuy(){
+  const room = state.room; const me = myPlayer(); const req = room.pendingRebuy; if(!req || !me) return;
+  if(!req.approvals.includes(me.id)) req.approvals.push(me.id);
+  const active = activePlayers(room).map(p=>p.id);
+  const allApproved = active.every(id=>req.approvals.includes(id));
+  if(allApproved){
+    const player = room.players.find(p=>p.id===req.playerId);
+    player.buyIn += req.amount; player.balance += req.amount;
+    room.ledger.unshift({ id: uid(), ts: Date.now(), type:'rebuy', from: req.playerName, amount: req.amount });
+    room.pendingRebuy = null;
+  }
+  await saveRoom(room); render();
+}
+async function declineRebuy(){
+  const room = state.room; room.pendingRebuy = null;
+  await saveRoom(room); render();
+}
+
+async function cashOut(){
+  const room = state.room; const me = myPlayer(); if(!me) return;
+  me.cashedOut = true; me.cashedOutAt = Date.now();
+  room.ledger.unshift({ id: uid(), ts: Date.now(), type:'cashout', from: me.name, amount: me.balance });
+  state.modal = null;
+  await saveRoom(room); render();
+}
+async function endGame(){
+  if(!isHost()) return;
+  const room = state.room; room.status='ended';
+  await saveRoom(room); state.view='settlement'; render();
+}
+async function newRound(){
+  if(!isHost()) return;
+  const room = state.room;
+  room.players.forEach(p=>{ p.balance = p.buyIn; p.cashedOut = false; });
+  room.ledger = []; room.pot = { amount:0, contributions:{} }; room.pendingRebuy = null;
+  room.status = 'active';
+  await saveRoom(room); state.view='table'; render();
+}
+function exitToHome(){
+  stopPolling();
+  state.view='home'; state.roomCode=null; state.myId=null; state.room=null; state.modal=null; state.error='';
+  try{ history.replaceState(null,'','#'); }catch(e){}
+  render();
+}
+
+function computeSettlement(room){
+  const bal = room.players.map(p=>({ name:p.name, color:p.color, amt: p.balance - p.buyIn }));
+  const creditors = bal.filter(x=>x.amt>0.004).map(x=>({...x})).sort((a,b)=>b.amt-a.amt);
+  const debtors = bal.filter(x=>x.amt<-0.004).map(x=>({...x})).sort((a,b)=>a.amt-b.amt);
+  const transfers = []; let i=0, j=0;
+  while(i<debtors.length && j<creditors.length){
+    const d=debtors[i], c=creditors[j];
+    const amt = Math.min(-d.amt, c.amt);
+    transfers.push({ from:d.name, to:c.name, amount:amt });
+    d.amt += amt; c.amt -= amt;
+    if(Math.abs(d.amt)<0.01) i++;
+    if(Math.abs(c.amt)<0.01) j++;
+  }
+  return { bal, transfers };
+}
+
+/* ---------------- render helpers ---------------- */
+
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function brand(){ return `<div class="brand"><div class="mark"></div><span>Rail\u00b7Ledger</span></div>`; }
+
+function seatPositions(n){
+  const pos = [];
+  for(let i=0;i<n;i++){
+    const angle = (2*Math.PI*i/n) - Math.PI/2;
+    const x = 50 + 44*Math.cos(angle);
+    const y = 50 + 42*Math.sin(angle);
+    pos.push({x,y});
+  }
+  return pos;
+}
+
+function betStack(amount){
+  if(!amount) return '';
+  const color = chipTier(amount);
+  const n = amount>=500?4:(amount>=100?3:(amount>=25?2:1));
+  let dots='';
+  for(let i=0;i<n;i++) dots += `<span class="bet-dot" style="background:${color}"></span>`;
+  return `<div class="bet-stack">${dots}</div><div class="bet-amt">${amount}</div>`;
+}
+
+function renderRoundTable(room, mode){
+  const players = room.players;
+  const positions = seatPositions(players.length);
+  const cur = room.currency;
+  const seats = players.map((p,i)=>{
+    const pos = positions[i];
+    const isMe = p.id === state.myId;
+    let inner, sub;
+    if(mode === 'lobby'){
+      inner = `<div class="chip" style="background:radial-gradient(circle at 35% 30%, ${p.color}, ${p.color}cc 75%);">
+        <div class="amt mono">${fmt(p.buyIn, cur)}</div></div>`;
+      sub = isHost()
+        ? `<div class="stepper">
+            <button onclick="adjustBuyIn('${p.id}', -50)">&minus;</button>
+            <input type="text" class="mono" value="${p.buyIn}" onchange="setBuyInExact('${p.id}', this.value)">
+            <button onclick="adjustBuyIn('${p.id}', 50)">+</button>
+          </div>`
+        : '';
+    } else {
+      const contribution = (room.pot.contributions && room.pot.contributions[p.id]) || 0;
+      const clickable = !isMe && !p.cashedOut && room.pot.amount >= 0;
+      inner = `<div class="chip ${clickable?'clickable':''} ${isMe?'me':''}"
+          style="background:radial-gradient(circle at 35% 30%, ${p.color}, ${p.color}cc 75%); ${p.cashedOut?'opacity:.35;':''}"
+          ${clickable ? `onclick="state.modal={type:'award', to:'${p.id}'}; render()"` : ''}>
+        <div class="amt mono">${fmt(p.balance, cur)}</div></div>`;
+      sub = p.cashedOut ? `<div class="cashed-badge">cashed out</div>` : betStack(contribution);
+    }
+    return `<div class="seat" style="left:${pos.x}%; top:${pos.y}%;">
+      ${inner}
+      <div class="seat-name">${esc(p.name)}${p.id===room.hostId?' \u2605':''}${isMe?' (you)':''}</div>
+      ${sub}
+    </div>`;
+  }).join('');
+
+  const center = mode === 'lobby'
+    ? `<div class="table-center"><div class="pot-label">Table</div><div class="pot-amt" style="font-size:16px;">${esc(room.name)}</div></div>`
+    : `<div class="table-center"><div class="pot-label">Hand pot</div><div class="pot-amt">${fmt(room.pot.amount, cur)}</div></div>`;
+
+  return `<div class="table-wrap"><div class="table-oval"></div>${center}${seats}</div>`;
+}
+
+/* ---------------- views ---------------- */
+
+function renderHome(){
+  const resumeHtml = state.myRooms.length ? `
+    <div class="panel">
+      <div class="section-label">Your tables</div>
+      ${state.myRooms.map(r=>`
+        <div class="resume-row">
+          <div><div class="rname">${esc(r.name)}</div><div class="rcode">${r.code}</div></div>
+          <button class="btn btn-secondary btn-sm" onclick='resumeRoom(${JSON.stringify(r)})'>Resume</button>
+        </div>`).join('')}
+    </div>` : '';
+  return `
+  ${brand()}
+  <div class="hero">
+    <div class="eyebrow">Real cards. Real table. Zero chips.</div>
+    <h1>Rack up, cash&nbsp;out, skip the chip tray.</h1>
+    <p>Play poker in person with your friends and let the app hold the stacks and the pot. Set the buy&#8209;in, pick USD or INR, share one link, sit everyone around a real table view, and settle up in the fewest payments possible when the night's over.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="state.view='create'; state.error=''; render()">Start a table</button>
+      <button class="btn btn-secondary" onclick="state.view='join'; state.error=''; render()">Join with a code</button>
+    </div>
+  </div>
+  ${resumeHtml}`;
+}
+
+function renderCreate(){
+  const d = state.createDraft;
+  return `
+  ${brand()}
+  <button class="backlink" onclick="state.view='home'; render()">&larr; back</button>
+  <div class="panel">
+    <h2 style="font-size:20px;margin-bottom:18px;">New table</h2>
+    <div class="field"><label>Table name</label>
+      <input type="text" value="${esc(d.name)}" placeholder="Friday Night Game" oninput="state.createDraft.name=this.value"></div>
+    <div class="field"><label>Your name (you're the host)</label>
+      <input type="text" value="${esc(d.hostName)}" placeholder="Alex" oninput="state.createDraft.hostName=this.value"></div>
+    <div class="field"><label>Currency</label>
+      <div class="pillrow">
+        <div class="pill ${d.currency==='USD'?'active':''}" onclick="state.createDraft.currency='USD'; render()">USD $</div>
+        <div class="pill ${d.currency==='INR'?'active':''}" onclick="state.createDraft.currency='INR'; render()">INR \u20B9</div>
+      </div></div>
+    <div class="field"><label>Starting stack per player</label>
+      <input type="number" min="1" value="${d.stack}" oninput="state.createDraft.stack=this.value"></div>
+    ${state.error ? `<div class="error-text">${esc(state.error)}</div>` : ''}
+    <button class="btn btn-primary btn-block" style="margin-top:6px;" onclick="createRoom()">Create table</button>
+  </div>`;
+}
+
+function renderJoin(){
+  const d = state.joinDraft;
+  return `
+  ${brand()}
+  <button class="backlink" onclick="state.view='home'; render()">&larr; back</button>
+  <div class="panel">
+    <h2 style="font-size:20px;margin-bottom:18px;">Join a table</h2>
+    <div class="field"><label>Table code</label>
+      <input type="text" style="text-transform:uppercase;letter-spacing:.08em;" value="${esc(d.code)}" placeholder="ABCDE" oninput="state.joinDraft.code=this.value"></div>
+    <div class="field"><label>Your name</label>
+      <input type="text" value="${esc(d.name)}" placeholder="Sam" oninput="state.joinDraft.name=this.value"></div>
+    ${state.error ? `<div class="error-text">${esc(state.error)}</div>` : ''}
+    <p style="color:var(--ink-dim);font-size:12.5px;margin:-6px 0 16px;">Rejoining after a break? Use the exact same name you sat down with and you'll get your seat and chips back.</p>
+    <button class="btn btn-primary btn-block" onclick="joinRoom()">Join table</button>
+  </div>`;
+}
+
+function renderLobby(){
+  const room = state.room; const host = isHost();
+  return `
+  ${brand()}
+  <div class="room-head">
+    <h2>${esc(room.name)}</h2>
+    <div class="head-actions"><div class="code-chip">${room.code}<button onclick="copyLink()">copy link</button></div></div>
+  </div>
+  ${renderRoundTable(room, 'lobby')}
+  <div class="panel">
+    ${host
+      ? `<button class="btn btn-felt btn-block" onclick="startGame()">Deal me in \u2014 start the game</button>
+         <div class="waiting-note" style="color:var(--ink-dim);font-size:13.5px;margin-top:12px;">Adjust each player's stack above before starting. Everyone plays in ${room.currency==='USD'?'US Dollars':'Indian Rupees'}.</div>`
+      : `<div style="color:var(--ink-dim);font-size:13.5px;">Waiting for the host to start the game\u2026 keep this tab open, or come back later with the same name and you'll be seated again.</div>`}
+  </div>
+  <button class="backlink" style="margin-top:16px;" onclick="exitToHome()">&larr; exit to home</button>`;
+}
+
+function renderTable(){
+  const room = state.room; const cur = room.currency; const me = myPlayer();
+  const bank = activePlayers(room).reduce((s,p)=>s+p.balance,0);
+  const denomBase = room.defaultStack || 100;
+  const denoms = [Math.max(1,niceRound(denomBase*0.05)), niceRound(denomBase*0.25), niceRound(denomBase*0.5)];
+
+  const rebuyBanner = room.pendingRebuy ? `
+    <div class="rebuy-banner">
+      <div class="rtitle"><b>${esc(room.pendingRebuy.playerName)}</b> wants to buy in for ${fmt(room.pendingRebuy.amount, cur)} more.</div>
+      <div class="approve-count">${room.pendingRebuy.approvals.length} / ${activePlayers(room).length} players approved</div>
+      <div class="cta-row" style="margin-top:0;">
+        <button class="btn btn-felt btn-sm" onclick="approveRebuy()">Approve</button>
+        <button class="btn btn-danger btn-sm" onclick="declineRebuy()">Decline</button>
+      </div>
+    </div>` : '';
+
+  const ledgerItems = room.ledger.slice(0, 40);
+  const ledgerHtml = ledgerItems.length ? ledgerItems.map(l=>{
+    let line = '';
+    if(l.type==='bet') line = `<span class="who">${esc(l.from)} <span style="color:var(--ink-dim)">pushed to pot</span></span>`;
+    else if(l.type==='pot_award') line = `<span class="who"><b>${esc(l.to)}</b> <span style="color:var(--ink-dim)">won the pot</span></span>`;
+    else if(l.type==='rebuy') line = `<span class="who">${esc(l.from)} <span style="color:var(--ink-dim)">bought more chips</span></span>`;
+    else if(l.type==='cashout') line = `<span class="who">${esc(l.from)} <span style="color:var(--ink-dim)">cashed out</span></span>`;
+    else line = `<span class="who" style="color:var(--ink-dim)">${esc(l.text||'')}</span>`;
+    const amtHtml = l.amount ? `<span class="amt-cell mono" style="color:var(--gold-bright)">${fmt(l.amount, cur)}</span>` : '';
+    return `<li><span>${line}</span><span style="display:flex;gap:10px;align-items:baseline;">${amtHtml}<span class="ts">${new Date(l.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span></span></li>`;
+  }).join('') : `<div class="empty-ledger">Nothing's happened yet \u2014 push some chips to the pot to get going.</div>`;
+
+  const meCashed = me && me.cashedOut;
+
+  return `
+  ${brand()}
+  <div class="room-head">
+    <h2>${esc(room.name)}</h2>
+    <div class="head-actions">
+      <div class="code-chip">${room.code}<button onclick="copyLink()">copy link</button></div>
+      <button class="icon-btn" onclick="state.modal={type:'exit'}; render()">Exit</button>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="stat-pill"><div class="lbl">Hand pot</div><div class="val">${fmt(room.pot.amount, cur)}</div></div>
+    <div class="stat-pill felt"><div class="lbl">Bank total (chips in play)</div><div class="val" style="color:var(--felt-bright)">${fmt(bank, cur)}</div></div>
+  </div>
+  ${rebuyBanner}
+  ${renderRoundTable(room, 'active')}
+
+  ${!meCashed ? `
+  <div class="action-bar">
+    <div class="section-label">Your move</div>
+    <div class="slider-row">
+      <input type="range" min="0" max="${me?me.balance:0}" step="1" value="${state.betAmount}" oninput="updateBetSlider(this.value)">
+      <div class="slider-val mono">${fmt(state.betAmount, cur)}</div>
+    </div>
+    <div class="denom-row">
+      ${denoms.map(d=>`<div class="denom-chip" style="background:${chipTier(d)}22;color:${chipTier(d)==='#EDEAE3'?'#EDEAE3':chipTier(d)};border-color:${chipTier(d)}66;" onclick="setBetPreset(${d})">${fmt(d,cur)}</div>`).join('')}
+      <div class="denom-chip" style="background:var(--gold)22;color:var(--gold-bright);border-color:var(--gold)66;" onclick="setBetPreset(${me?me.balance:0})">All in</div>
+    </div>
+    ${state.error ? `<div class="error-text">${esc(state.error)}</div>` : ''}
+    <button class="btn btn-felt btn-block" onclick="pushToPot()">Push chips to pot</button>
+    <div class="util-row">
+      <button class="btn btn-secondary btn-sm" onclick="state.modal={type:'rebuy', amount:room.defaultStack}; render()">Buy more chips</button>
+      <button class="btn btn-danger btn-sm" onclick="state.modal={type:'cashout'}; render()">Cash out</button>
+    </div>
+  </div>` : `<div class="panel" style="text-align:center;color:var(--ink-dim);font-size:13.5px;">You've cashed out. You can watch, or rejoin from the exit menu.</div>`}
+
+  <div class="panel" style="margin-top:14px;">
+    <div class="section-label">Ledger</div>
+    <ul class="ledger">${ledgerHtml}</ul>
+  </div>
+
+  ${isHost() ? `<button class="btn btn-primary btn-block" style="margin-top:14px;" onclick="endGame()">End game &amp; settle up</button>` : ''}
+  ${renderModal()}`;
+}
+
+function renderModal(){
+  const m = state.modal; if(!m) return '';
+  const room = state.room; const cur = room ? room.currency : 'USD';
+  if(m.type === 'award'){
+    const to = room.players.find(p=>p.id===m.to);
+    return `<div class="modal-backdrop" onclick="if(event.target===this){state.modal=null; render();}">
+      <div class="modal">
+        <h3>Award the pot to ${esc(to.name)}?</h3>
+        <p>The full hand pot of <b class="mono" style="color:var(--gold-bright)">${fmt(room.pot.amount, cur)}</b> will move to their stack and the pot resets to zero.</p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="state.modal=null; render()">Cancel</button>
+          <button class="btn btn-primary" onclick="awardPot('${m.to}')">Award pot</button>
+        </div>
+      </div></div>`;
+  }
+  if(m.type === 'rebuy'){
+    return `<div class="modal-backdrop" onclick="if(event.target===this){state.modal=null; state.error=''; render();}">
+      <div class="modal">
+        <h3>Buy more chips</h3>
+        <p>Every seated player has to approve before the chips are added \u2014 same as agreeing to a rebuy at a real table.</p>
+        <div class="field"><label>Amount (${cur})</label>
+          <input type="number" min="1" value="${m.amount}" oninput="state.modal.amount=this.value"></div>
+        ${state.error ? `<div class="error-text">${esc(state.error)}</div>` : ''}
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="state.modal=null; state.error=''; render()">Cancel</button>
+          <button class="btn btn-primary" onclick="requestRebuy(state.modal.amount)">Request</button>
+        </div>
+      </div></div>`;
+  }
+  if(m.type === 'cashout'){
+    const me = myPlayer();
+    return `<div class="modal-backdrop" onclick="if(event.target===this){state.modal=null; render();}">
+      <div class="modal">
+        <h3>Cash out</h3>
+        <p>You'll leave the table with <b class="mono" style="color:var(--gold-bright)">${fmt(me.balance, cur)}</b> recorded as yours for settlement. You can still be added back if you rejoin.</p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="state.modal=null; render()">Cancel</button>
+          <button class="btn btn-danger" onclick="cashOut()">Cash out</button>
+        </div>
+      </div></div>`;
+  }
+  if(m.type === 'exit'){
+    return `<div class="modal-backdrop" onclick="if(event.target===this){state.modal=null; render();}">
+      <div class="modal">
+        <h3>Exit table</h3>
+        <p>Just stepping away? Exit and your seat and chips stay exactly as they are \u2014 open the same link (or "Resume" from home) on this device to sit back down.</p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" onclick="state.modal=null; render()">Stay</button>
+          <button class="btn btn-secondary" onclick="exitToHome()">Exit, keep my seat</button>
+        </div>
+      </div></div>`;
+  }
+  return '';
+}
+
+function renderSettlement(){
+  const room = state.room; const cur = room.currency;
+  const { bal, transfers } = computeSettlement(room);
+  const balHtml = bal.map(b=>`
+    <div class="net-row"><div class="net-name"><span class="dot" style="background:${b.color}"></span>${esc(b.name)}</div>
+    <div class="net-val ${b.amt>=0?'pos':'neg'} mono">${b.amt>=0?'+':'\u2212'}${fmt(Math.abs(b.amt), cur)}</div></div>`).join('');
+  const settleHtml = transfers.length ? transfers.map(t=>`
+    <div class="settle-line"><span>${esc(t.from)}</span><span class="arrow">&rarr;</span><span>${esc(t.to)}</span>
+    <span class="amt mono">${fmt(t.amount, cur)}</span></div>`).join('') : `<div class="empty-ledger">Everyone's already even \u2014 nothing to settle.</div>`;
+
+  return `
+  ${brand()}
+  <div class="room-head"><h2>${esc(room.name)} \u2014 settle up</h2></div>
+  <div class="panel"><div class="section-label">Net result</div>${balHtml}</div>
+  <div class="panel"><div class="section-label">Who pays whom</div>${settleHtml}</div>
+  ${isHost() ? `
+    <div class="cta-row" style="margin-top:14px;">
+      <button class="btn btn-felt" onclick="newRound()">Start a new round</button>
+      <button class="btn btn-secondary" onclick="exitToHome()">Close table</button>
+    </div>` : `<button class="backlink" style="margin-top:16px;" onclick="exitToHome()">&larr; leave</button>`}
+  <div class="footer-note">Settlement is the minimum number of payments to zero everyone out \u2014 no real money moves through the app.</div>`;
+}
+
+function copyLink(){
+  const link = currentLink();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(link).then(()=>showToast('Link copied \u2014 send it to your table')).catch(()=>showToast(link));
+  } else { showToast(link); }
+}
+
+function render(){
+  const app = document.getElementById('app');
+  let html = '';
+  switch(state.view){
+    case 'home': html = renderHome(); break;
+    case 'create': html = renderCreate(); break;
+    case 'join': html = renderJoin(); break;
+    case 'lobby': html = state.room ? renderLobby() : renderHome(); break;
+    case 'table': html = state.room ? renderTable() : renderHome(); break;
+    case 'settlement': html = state.room ? renderSettlement() : renderHome(); break;
+    default: html = renderHome();
+  }
+  app.innerHTML = html;
+}
+
+init();
+
+<!-- Firebase SDK & Realtime Bridge -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCYkW8d4TkxeWGXNCQqiv66Jbpy1p94kdc",
+  authDomain: "poker-d7b96.firebaseapp.com",
+  projectId: "poker-d7b96",
+  storageBucket: "poker-d7b96.firebasestorage.app",
+  messagingSenderId: "761852238177",
+  appId: "1:761852238177:web:ab2dd2d4bd27dc6037cd20",
+  measurementId: "G-DETNVLVTWQ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  window.saveRoom = function(roomId, gameData) {
+    set(ref(db, 'rooms/' + roomId), gameData);
+  };
+
+  window.listenToRoom = function(roomId, updateUICallback) {
+    const roomRef = ref(db, 'rooms/' + roomId);
+    onValue(roomRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        updateUICallback(data);
+      }
+    });
+  };
+</script>
